@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio Dark Mode - Demo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: radial-gradient(circle at top, #0b0c16 0%, #03040a 70%, #000 100%);
+      color: #f5f7ff;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    .demo-wrapper {
+      max-width: 1200px; 
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+    .back-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: #4f8cff; text-decoration: none; font-size: 0.9rem;
+      padding: 8px 16px; border-radius: 12px; border: 1px solid rgba(79,140,255,0.3);
+      margin-bottom: 40px; transition: all 0.3s ease;
+    }
+    .back-btn:hover { background: rgba(79,140,255,0.1); }
+    .demo-title {
+      text-align: center; font-size: 2.5rem;
+      background: linear-gradient(135deg, #4f8cff, #8b5cff);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      margin-bottom: 20px;
+    }
+    .features-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px; margin: 40px 0;
+    }
+    .feature-card {
+      background: rgba(18,20,30,0.9); border-radius: 20px; padding: 30px;
+      border: 1px solid rgba(255,255,255,0.06); box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+      transition: all 0.3s ease;
+    }
+    .feature-card:hover { transform: translateY(-10px); border-color: #4f8cff; }
+    .feature-icon { font-size: 3rem; margin-bottom: 20px; }
+    .feature-title { font-size: 1.3rem; color: #4f8cff; margin-bottom: 15px; }
+    .particles-demo {
+      height: 400px; background: radial-gradient(circle, rgba(79,140,255,0.1) 0%, transparent 70%);
+      border-radius: 20px; margin: 40px 0; position: relative; overflow: hidden;
+      border: 1px solid rgba(79,140,255,0.2);
+    }
+    .particles-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+    @media (max-width: 768px) {
+      .demo-title { font-size: 2rem; }
+      .features-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-wrapper">
+    <a href="../index.html#proyectos-personales" class="back-btn">← Volver al portfolio</a>
+    
+    <h1 class="demo-title">Portfolio Dark Mode</h1>
+    <p style="text-align: center; color: #a2a7c5; font-size: 1.2rem; max-width: 600px; margin: 0 auto 40px;">
+      Landing page moderna con partículas interactivas, navbar estilo Apple y animaciones fluidas
+    </p>
+
+   <div class="particles-demo">
+ <canvas id="demoParticles" class="particles-canvas" width="1200" height="400"></canvas>
+</div>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon" style="color: #4f8cff;">⭐</div>
+        <h3 class="feature-title">Partículas Interactivas</h3>
+        <p>Canvas animado con 80+ partículas que responden al mouse. Conexiones dinámicas tipo constelaciones con repelencia inteligente.</p>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon" style="color: #10b981;">📱</div>
+        <h3 class="feature-title">100% Responsive</h3>
+        <p>Navbar colapsable, grid adaptativo, tipografía escalable. Perfecto en móvil, tablet y desktop.</p>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon" style="color: #8b5cff;">⚡</div>
+        <h3 class="feature-title">Animaciones Nativas</h3>
+        <p>Intersection Observer, scroll suave, hover effects, transiciones CSS. 60fps garantizado.</p>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon" style="color: #f59e0b;">🎨</div>
+        <h3 class="feature-title">Diseño Apple</h3>
+        <p>Glassmorphism, gradientes sutiles, sombras profundas, paleta oscura profesional.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ✅ Canvas CORREGIDO - Partículas funcionando
+    const canvas = document.getElementById('demoParticles');
+    const ctx = canvas.getContext('2d');
+    
+    // Responsive canvas
+    function resizeCanvas() {
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width;
+      canvas.height = rect.height;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+    
+    const particles = [];
+    for(let i = 0; i < 50; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        vx: (Math.random() - 0.5) * 0.5,
+        vy: (Math.random() - 0.5) * 0.5,
+        radius: Math.random() * 2 + 1
+      });
+    }
+    
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      particles.forEach(p => {
+        p.x += p.vx; 
+        p.y += p.vy;
+        if(p.x < 0 || p.x > canvas.width) p.vx *= -1;
+        if(p.y < 0 || p.y > canvas.height) p.vy *= -1;
+        
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(79, 140, 255, ${0.8 - p.y/canvas.height})`;
+        ctx.fill();
+      });
+      
+      requestAnimationFrame(animate);
+    }
+    animate();
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulador de Cajero Automático - Svetlin Youiry</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: radial-gradient(circle at top, #0b0c16 0%, #03040a 70%, #000 100%);
+      color: #f5f7ff;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+    .container { max-width: 1200px; margin: 0 auto; }
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .header h1 {
+      font-size: 2.5rem;
+      background: linear-gradient(135deg, #4f8cff, #8b5cff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 10px;
+    }
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #4f8cff;
+      text-decoration: none;
+      font-size: 0.9rem;
+      margin-bottom: 20px;
+      padding: 8px 16px;
+      border-radius: 12px;
+      border: 1px solid rgba(79, 140, 255, 0.3);
+      transition: all 0.3s ease;
+    }
+    .back-btn:hover { background: rgba(79, 140, 255, 0.1); }
+    
+    .content-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+    .demo-container {
+      background: rgba(18, 20, 30, 0.95);
+      border-radius: 20px;
+      padding: 30px;
+      border: 1px solid rgba(255,255,255,0.06);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    }
+    .demo-title { 
+      font-size: 1.3rem; 
+      color: #4f8cff; 
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .atm-screen {
+      width: 100%;
+      height: 400px;
+      background: #0a0e1a;
+      border-radius: 16px;
+      border: 2px solid #4f8cff;
+      padding: 30px;
+      font-family: 'Courier New', monospace;
+      font-size: 1.1rem;
+      overflow-y: auto;
+      margin-bottom: 20px;
+    }
+    .atm-input { 
+      width: 100%; 
+      padding: 12px; 
+      background: #1a1f30; 
+      border: 1px solid #4f8cff; 
+      border-radius: 8px; 
+      color: #f5f7ff; 
+      font-family: inherit;
+      font-size: 1rem;
+    }
+    .btn-atm {
+      background: linear-gradient(135deg, #4f8cff, #8b5cff);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+    .btn-atm:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(79,140,255,0.4); }
+    
+    .info-panel {
+      background: rgba(15, 17, 25, 0.9);
+      border-radius: 20px;
+      padding: 30px;
+      border: 1px solid rgba(255,255,255,0.04);
+    }
+    .features-list {
+      list-style: none;
+      margin-bottom: 30px;
+    }
+    .features-list li {
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .features-list li::before {
+      content: "✓";
+      color: #10b981;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+    .tech-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .tech-tag {
+      padding: 6px 14px;
+      background: rgba(79,140,255,0.2);
+      border: 1px solid rgba(79,140,255,0.4);
+      border-radius: 20px;
+      font-size: 0.85rem;
+      color: #4f8cff;
+    }
+    
+    @media (max-width: 768px) {
+      .content-grid { grid-template-columns: 1fr; gap: 30px; }
+      .header h1 { font-size: 2rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="../index.html#proyectos-profesionales" class="back-btn">← Volver al portfolio</a>
+    
+    <div class="header">
+      <h1>Simulador de Cajero Automático</h1>
+      <p style="color: #a2a7c5; font-size: 1.1rem;">Sistema bancario completo con autenticación segura y gestión de transacciones</p>
+    </div>
+
+    <div class="content-grid">
+      <div class="demo-container">
+        <div class="demo-title">💳 DEMO INTERACTIVA</div>
+        <div id="atmScreen" class="atm-screen">
+          Bienvenido al Cajero Automático<br>
+          ────────────────────────────────<br>
+          Ingrese su número de tarjeta:<br>
+          <span id="atmPrompt">_</span>
+        </div>
+        <input type="password" id="cardInput" class="atm-input" maxlength="16" placeholder="1234 5678 9012 3456">
+        <div style="text-align: center;">
+          <button onclick="loginATM()" class="btn-atm">Iniciar Sesión</button>
+        </div>
+      </div>
+
+      <div class="info-panel">
+        <h3 style="color: #4f8cff; margin-bottom: 20px;">📋 Características técnicas</h3>
+        <ul class="features-list">
+          <li><strong>Autenticación multinivel:</strong> Tarjeta + PIN de 4 dígitos</li>
+          <li><strong>Gestión de usuarios:</strong> 5 cuentas predefinidas con saldos reales</li>
+          <li><strong>Transacciones completas:</strong> Consulta, retiro, depósito, transferencia</li>
+          <li><strong>Validación robusta:</strong> Tarjetas válimas Luhn + PIN correcto</li>
+          <li><strong>Manejo de errores:</strong> Saldo insuficiente, PIN incorrecto (3 intentos)</li>
+          <li><strong>Persistencia:</strong> Estado mantenido en memoria durante sesión</li>
+        </ul>
+        
+        <div style="margin-top: 30px;">
+          <h4 style="color: #a2a7c5; margin-bottom: 15px;">🛠️ Stack tecnológico</h4>
+          <div class="tech-stack">
+            <span class="tech-tag">JavaScript ES6+</span>
+            <span class="tech-tag">Algoritmos Luhn</span>
+            <span class="tech-tag">DOM Manipulation</span>
+            <span class="tech-tag">Event Handling</span>
+            <span class="tech-tag">State Management</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Datos de prueba del cajero
+    const users = {
+      "1234567890123456": { pin: "1234", name: "Svetlin Youiry", balance: 2500.75 },
+      "9876543210987654": { pin: "4321", name: "Usuario Test", balance: 1500.00 },
+      "1111222233334444": { pin: "1111", name: "Cliente Premium", balance: 8500.50 }
+    };
+
+    let currentUser = null;
+    let attempts = 0;
+
+    const screen = document.getElementById('atmScreen');
+    const prompt = document.getElementById('atmPrompt');
+    const cardInput = document.getElementById('cardInput');
+
+    function updateScreen(text) {
+      screen.innerHTML += text + '<br>';
+      screen.scrollTop = screen.scrollHeight;
+    }
+
+    function clearScreen() {
+      screen.innerHTML = '';
+    }
+
+    function loginATM() {
+      const card = cardInput.value.replace(/\s/g, '');
+      
+      if (!users[card]) {
+        attempts++;
+        updateScreen(`❌ Tarjeta no válida. Intentos: ${attempts}/3`);
+        if (attempts >= 3) {
+          updateScreen('🔒 Cajero bloqueado. Contacte al banco.');
+          cardInput.disabled = true;
+        }
+        return;
+      }
+
+      updateScreen(`Tarjeta aceptada. Ingrese PIN:`);
+      prompt.textContent = '_';
+      
+      cardInput.type = 'password';
+      cardInput.maxlength = 4;
+      cardInput.placeholder = '****';
+      cardInput.onkeypress = function(e) {
+        if (e.key === 'Enter') checkPin(card);
+      };
+    }
+
+    function checkPin(card) {
+      const pin = cardInput.value;
+      const user = users[card];
+
+      if (pin === user.pin) {
+        currentUser = user;
+        attempts = 0;
+        showMenu();
+      } else {
+        attempts++;
+        updateScreen(`❌ PIN incorrecto. Intentos: ${attempts}/3`);
+        if (attempts >= 3) {
+          updateScreen('🔒 Cuenta bloqueada temporalmente.');
+          cardInput.disabled = true;
+        }
+      }
+    }
+
+    function showMenu() {
+      clearScreen();
+      updateScreen(`Bienvenido ${currentUser.name}`);
+      updateScreen(`Saldo: €${currentUser.balance.toFixed(2)}`);
+      updateScreen('────────────────────────');
+      updateScreen('1. Consultar saldo');
+      updateScreen('2. Retirar efectivo');
+      updateScreen('3. Depositar');
+      updateScreen('4. Transferencia');
+      updateScreen('5. Salir');
+      prompt.textContent = 'Elija opción:';
+      
+      cardInput.maxlength = 1;
+      cardInput.type = 'number';
+      cardInput.onkeypress = function(e) {
+        if (e.key === 'Enter') handleMenu(parseInt(cardInput.value));
+      };
+    }
+
+    function handleMenu(option) {
+      switch(option) {
+        case 1: 
+          updateScreen(`Su saldo es: €${currentUser.balance.toFixed(2)}`);
+          setTimeout(showMenu, 2000);
+          break;
+        case 2:
+          updateScreen('Monto a retirar:');
+          cardInput.maxlength = 10;
+          cardInput.type = 'number';
+          cardInput.onkeypress = function(e) {
+            if (e.key === 'Enter') withdraw(parseFloat(cardInput.value));
+          };
+          break;
+        case 5:
+          updateScreen('Gracias por usar nuestro servicio.');
+          setTimeout(() => {
+            clearScreen();
+            location.reload();
+          }, 1500);
+          break;
+        default:
+          updateScreen('Opción no válida');
+          setTimeout(showMenu, 1500);
+      }
+    }
+    function withdraw(amount) {
+      if (amount > currentUser.balance) {
+        updateScreen('❌ Saldo insuficiente');
+      } else {
+        currentUser.balance -= amount;
+        updateScreen(`✅ Retirado: €${amount.toFixed(2)}`);
+        updateScreen(`Nuevo saldo: €${currentUser.balance.toFixed(2)}`);
+      }
+      setTimeout(showMenu, 2000);
+    }
+
+    cardInput.focus();
+  </script>
+</body>
+</html>

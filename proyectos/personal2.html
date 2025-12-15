@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>File Organizer Pro - Demo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #0a0e1a 0%, #1a1f30 50%, #0f141e 100%);
+      color: #f5f7ff; min-height: 100vh; padding: 40px 20px;
+    }
+    .container { max-width: 1200px; margin: 0 auto; }
+    .back-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: #10b981; text-decoration: none; font-size: 0.9rem;
+      padding: 8px 16px; border-radius: 12px; border: 1px solid rgba(16,185,129,0.3);
+      margin-bottom: 30px; transition: all 0.3s ease;
+    }
+    .back-btn:hover { background: rgba(16,185,129,0.1); }
+    .header { text-align: center; margin-bottom: 40px; }
+    .header h1 {
+      font-size: 2.5rem; background: linear-gradient(135deg, #10b981, #34d399);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .demo-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 30px;
+    }
+    .tool-card {
+      background: rgba(18,20,30,0.95); border-radius: 20px; padding: 30px;
+      border: 1px solid rgba(16,185,129,0.2); box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+      transition: all 0.3s ease;
+    }
+    .tool-card:hover { transform: translateY(-8px); border-color: #10b981; }
+    .tool-header {
+      display: flex; align-items: center; gap: 15px; margin-bottom: 25px;
+    }
+    .tool-icon { font-size: 2.5rem; }
+    .tool-title { font-size: 1.3rem; color: #10b981; font-weight: 600; }
+    .terminal {
+      background: #0a0e1a; border-radius: 12px; padding: 20px; margin: 20px 0;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; line-height: 1.6;
+      border-left: 4px solid #10b981; position: relative;
+    }
+    .terminal::before {
+      content: '$ '; color: #10b981; font-weight: 500;
+    }
+    .btn-run {
+      background: linear-gradient(135deg, #10b981, #34d399); color: white;
+      border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer;
+      font-weight: 500; transition: all 0.3s ease; font-family: inherit;
+    }
+    .btn-run:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(16,185,129,0.4); }
+    .output { margin-top: 15px; color: #a2a7c5; }
+    .stats { display: flex; gap: 20px; margin-top: 20px; }
+    .stat { text-align: center; }
+    .stat-number { font-size: 2rem; font-weight: 700; color: #10b981; display: block; }
+    @media (max-width: 768px) { .demo-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="../index.html#proyectos-personales" class="back-btn">← Volver al portfolio</a>
+    
+    <div class="header">
+      <h1>File Organizer Pro</h1>
+      <p style="color: #a2a7c5; font-size: 1.1rem;">Simulador interactivo de scripts de automatización para escritorio</p>
+    </div>
+
+    <div class="demo-grid">
+      <div class="tool-card">
+        <div class="tool-header">
+          <span class="tool-icon">📁</span>
+          <h3 class="tool-title">Folder Organizer</h3>
+        </div>
+        <div class="terminal" id="folderTerminal">
+          ./organize_files.sh Downloads/<br>Procesando 127 archivos...
+        </div>
+        <button class="btn-run" onclick="runFolderOrganizer()">Ejecutar Script</button>
+        <div class="output" id="folderOutput"></div>
+        <div class="stats">
+          <div class="stat"><span class="stat-number" id="filesProcessed">0</span>Archivos</div>
+          <div class="stat"><span class="stat-number" id="foldersCreated">0</span>Carpetas</div>
+        </div>
+      </div>
+
+      <div class="tool-card">
+        <div class="tool-header">
+          <span class="tool-icon">🔄</span>
+          <h3 class="tool-title">Bulk Renamer</h3>
+        </div>
+        <div class="terminal" id="renameTerminal">
+          ./rename_files.sh *.jpg "IMG_"<br>Renombrando archivos...
+        </div>
+        <input type="text" id="prefixInput" placeholder="Prefijo (ej: PROJ_)" style="width: 100%; padding: 12px; margin: 15px 0; background: #1a1f30; border: 1px solid #333; border-radius: 8px; color: #f5f7ff;">
+        <button class="btn-run" onclick="runRenamer()">Renombrar Archivos</button>
+        <div class="output" id="renameOutput"></div>
+      </div>
+
+      <div class="tool-card">
+        <div class="tool-header">
+          <span class="tool-icon">📊</span>
+          <h3 class="tool-title">System Monitor</h3>
+        </div>
+        <div class="terminal" id="monitorTerminal">
+          ./monitor.sh<br>CPU: --% | RAM: --GB | Disk: --%
+        </div>
+        <button class="btn-run" onclick="startMonitor()">Iniciar Monitor</button>
+        <div class="output" id="monitorOutput"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let monitorInterval;
+    
+    function runFolderOrganizer() {
+      const output = document.getElementById('folderOutput');
+      const filesEl = document.getElementById('filesProcessed');
+      const foldersEl = document.getElementById('foldersCreated');
+      
+      output.innerHTML = `
+        <div style="color: #10b981;">✅ 127 archivos procesados</div>
+        <div style="color: #10b981;">📁 Carpetas creadas:</div>
+        <div style="color: #a2a7c5; font-size: 0.8rem;">
+          • Imágenes (43)<br>
+          • Documentos (28)<br>
+          • Videos (15)<br>
+          • Otros (41)
+        </div>
+      `;
+      filesEl.textContent = '127';
+      foldersEl.textContent = '4';
+    }
+    
+    function runRenamer() {
+      const prefix = document.getElementById('prefixInput').value || 'PROJ_';
+      const output = document.getElementById('renameOutput');
+      
+      output.innerHTML = `
+        <div style="color: #10b981;">✅ 56 archivos renombrados</div>
+        <div style="color: #a2a7c5;">
+          ${prefix}001.jpg → foto_original_001.jpg<br>
+          ${prefix}002.jpg → foto_original_002.jpg<br>
+          ${prefix}003.png → foto_original_003.png<br>
+          ... +53 más
+        </div>
+      `;
+    }
+    
+    function startMonitor() {
+      const output = document.getElementById('monitorOutput');
+      let cpu = 15, ram = 3.2, disk = 78;
+      
+      monitorInterval = setInterval(() => {
+        cpu = Math.min(95, cpu + (Math.random() - 0.5) * 10);
+        ram = Math.min(15.9, ram + Math.random() * 0.5);
+        disk = Math.min(95, disk + Math.random() * 2);
+        
+        output.innerHTML = `
+          <div style="color: #10b981;">🖥️  Monitor activo - Actualización en vivo</div>
+          <div style="color: #f5f7ff; font-family: 'JetBrains Mono';">
+            CPU: <span style="color: ${cpu>80?'#f87171':'#10b981'}">${cpu.toFixed(1)}%</span> | 
+            RAM: <span style="color: ${ram>12?'#f59e0b':'#10b981'}">${ram.toFixed(1)}GB</span> | 
+            Disk: <span style="color: ${disk>90?'#f87171':'#f59e0b'}">${disk.toFixed(1)}%</span>
+          </div>
+        `;
+      }, 2000);
+    }
+  </script>
+</body>
+</html>

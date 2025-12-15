@@ -1,0 +1,43 @@
+{
+  "proyectos_profesionales": [
+    {
+      "nombre": "Simulador de Cajero Automático",
+      "descripcion": "Sistema completo de cajero automático con gestión de usuarios, PIN seguro, saldos y transacciones. Incluye validación de datos y manejo de errores.",
+      "tecnologias": "JavaScript · HTML · CSS · Algoritmos",
+      "link_visual": "proyectos/proyecto1.html",
+      "imagen": "img/proyecto-atm.jpg"
+    },
+    {
+      "nombre": "Gestor de Inventario Empresarial",
+      "descripcion": "Aplicación para control de stock con entrada/salida de productos, cálculo automático de existencias y generación de informes de inventario.",
+      "tecnologias": "JavaScript · Arrays · Funciones · DOM",
+      "link_visual": "proyectos/proyecto2.html",
+      "imagen": "img/proyecto-inventario.jpg"
+    },
+    {
+      "nombre": "Analizador de Texto Avanzado",
+      "descripcion": "Herramienta profesional para análisis estadístico de texto: conteo de palabras, caracteres, oraciones, frecuencia léxica y estadísticas detalladas.",
+      "tecnologias": "JavaScript · Strings · Regex · Estadísticas",
+      "link_visual": "proyectos/proyecto3.html",
+      "imagen": "img/proyecto-texto.jpg"
+    }
+  ],
+  "proyectos_personales": [
+    {
+      "nombre": "Portfolio Dark Mode",
+      "descripcion": "Landing page profesional construida con partículas animadas, navbar sticky estilo Apple, scroll suave y diseño responsive completo.",
+      "tecnologias": "HTML · CSS · JavaScript · Canvas",
+      "link_visual": "proyectos/personal1.html"
+    },
+    {
+      "nombre": "File Organizer Pro",
+      "descripcion": "Herramienta interactiva que simula scripts de automatización: organización de carpetas, renombrado masivo y monitor de recursos del sistema.",
+      "tecnologias": "JavaScript · File System · Automatización",
+      "link_visual": "proyectos/personal2.html"
+    }
+  ]
+}
+
+
+
+

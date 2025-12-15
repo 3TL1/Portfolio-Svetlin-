@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio | Técnico en Sistemas y Ciberseguridad</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- EmailJS -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+</head>
+<body>
+  <!-- Fondo interactivo -->
+  <canvas id="background-canvas"></canvas>
+
+  <!-- Navbar -->
+  <header class="header">
+    <nav class="navbar">
+      <div class="logo">SV · Portfolio</div>
+      <button class="nav-toggle" aria-label="Abrir menú">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links">
+        <li><a href="#sobre-mi">Sobre mí</a></li>
+        <li><a href="#hard-skills">Hard Skills</a></li>
+        <li><a href="#soft-skills">Soft Skills</a></li>
+        <li><a href="#experiencia">Experiencia laboral</a></li>
+        <li><a href="#proyectos-profesionales">Proyectos profesionales</a></li>
+        <li><a href="#proyectos-personales">Proyectos personales</a></li>
+        <li><a href="#formacion">Formación</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Contenido principal -->
+  <main class="main-content">
+    <!-- Hero / Sobre mí -->
+<section id="sobre-mi" class="section section-hero reveal">
+  <div class="hero-layout">
+    <div class="hero-content">
+      <p class="hero-kicker">Técnico en Sistemas · Ciberseguridad</p>
+      <h1 class="hero-title">Svetlin Youiry</h1>
+      <p class="hero-subtitle">
+        Estudiante de Técnico en Sistemas Microinformáticos y Redes con base sólida en ciberseguridad, administración de sistemas, redes y mantenimiento de equipos informáticos. 
+        Motivado por crecer en el sector IT y aportar valor en proyectos reales que impulsen la innovación tecnológica.
+      </p>
+      <div class="hero-meta">
+        <span>Madrid, España</span>
+        <span>Disponible para prácticas y primeros proyectos profesionales</span>
+      </div>
+      <div class="hero-actions">
+        <a href="#proyectos-profesionales" class="btn primary">Ver proyectos</a>
+        <a href="#contacto" class="btn ghost">Contactar</a>
+      </div>
+    </div>
+
+    <div class="hero-photo">
+      <img src="img/svetlin-cv.jpg" alt="Foto de Svetlin Youiry">
+    </div>
+  </div>
+</section>
+
+
+    <!-- Hard Skills -->
+    <section id="hard-skills" class="section reveal">
+      <div class="section-header">
+        <h2>Hard Skills</h2>
+        <p>Competencias técnicas clave para entornos profesionales de IT.</p>
+      </div>
+      <div class="chips-grid">
+        <span class="chip">Administración de sistemas</span>
+        <span class="chip">Redes y servicios en red</span>
+        <span class="chip">Montaje y mantenimiento de equipos</span>
+        <span class="chip">Sistemas operativos</span>
+        <span class="chip">Herramientas ofimáticas</span>
+        <span class="chip">Aplicaciones web</span>
+        <span class="chip">Ciberseguridad</span>
+        <span class="chip">HTML, CSS, JavaScript</span>
+        <span class="chip">Linux</span>
+        <span class="chip">Git</span>
+      </div>
+    </section>
+
+    <!-- Soft Skills -->
+    <section id="soft-skills" class="section reveal">
+      <div class="section-header">
+        <h2>Soft Skills</h2>
+        <p>Habilidades personales que refuerzan el desempeño técnico.</p>
+      </div>
+      <div class="chips-grid">
+        <span class="chip chip-soft">Aprendizaje rápido</span>
+        <span class="chip chip-soft">Pensamiento crítico</span>
+        <span class="chip chip-soft">Trabajo en equipo</span>
+        <span class="chip chip-soft">Resolución de problemas</span>
+        <span class="chip chip-soft">Adaptabilidad</span>
+        <span class="chip chip-soft">Proactividad</span>
+        <span class="chip chip-soft">Gestión del tiempo</span>
+        <span class="chip chip-soft">Responsabilidad</span>
+      </div>
+    </section>
+
+    <!-- Experiencia laboral -->
+    <section id="experiencia" class="section reveal">
+      <div class="section-header">
+        <h2>Experiencia laboral</h2>
+        <p>Primeros pasos profesionales en el entorno IT.</p>
+      </div>
+      <div class="timeline">
+        <article class="timeline-item">
+          <div class="timeline-meta">
+            <h3>Técnico de asistencia informática y redes (Prácticas)</h3>
+            <span class="timeline-location">San Bernardo, Madrid · 2025</span>
+          </div>
+          <ul class="timeline-list">
+            <li>Mantenimiento preventivo y correctivo de equipos informáticos.</li>
+            <li>Instalación y configuración de sistemas operativos.</li>
+            <li>Soporte técnico a usuarios y resolución de incidencias de red.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <!-- Proyectos profesionales -->
+    <section id="proyectos-profesionales" class="section reveal">
+      <div class="section-header">
+        <h2>Proyectos profesionales</h2>
+        <p>Selección de los 3 mejores ejercicios del repositorio master.</p>
+      </div>
+      <div class="section-note">
+        Repositorio principal: 
+        <a href="https://github.com/3TL1/ejercicios_master" target="_blank" rel="noopener">
+          github.com/3TL1/ejercicios_master
+        </a>
+      </div>
+      <div id="proyectos-profesionales-grid" class="cards-grid">
+        <!-- Tarjetas cargadas dinámicamente -->
+      </div>
+    </section>
+
+    <!-- Proyectos personales -->
+    <section id="proyectos-personales" class="section reveal">
+      <div class="section-header">
+        <h2>Proyectos personales</h2>
+        <p>Iniciativas propias para seguir aprendiendo y experimentando.</p>
+      </div>
+      <div id="proyectos-personales-grid" class="cards-grid">
+        <!-- Tarjetas cargadas dinámicamente -->
+      </div>
+    </section>
+
+    <!-- Formación (SIN ESO) -->
+    <section id="formacion" class="section reveal">
+      <div class="section-header">
+        <h2>Formación</h2>
+        <p>Recorrido académico orientado al ámbito tecnológico.</p>
+      </div>
+      <div class="education-list">
+        <article class="education-item">
+          <h3>Técnico en Sistemas Microinformáticos y Redes (SMR)</h3>
+          <span class="education-meta">PROMETEO by thePower FP · Sept 2024 – Actualidad</span>
+          <p>Formación oficial centrada en sistemas, redes, hardware y servicios, con enfoque muy práctico y orientado a la empleabilidad.</p>
+        </article>
+        <article class="education-item">
+          <h3>Máster en Ciberseguridad</h3>
+          <span class="education-meta">PROMETEO by thePower FP · Sept 2024 – Actualidad</span>
+          <p>Programa de especialización en ciberseguridad con contenidos en redes, seguridad ofensiva y defensiva, análisis de riesgos y protección frente a ciberamenazas.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Contacto -->
+    <section id="contacto" class="section reveal">
+      <div class="section-header">
+        <h2>Contacto</h2>
+        <p>Disponible para colaboraciones, prácticas y oportunidades IT.</p>
+      </div>
+      <div class="contact-grid">
+        <div class="contact-details">
+          <div class="contact-item">
+            <span class="contact-label">Email</span>
+            <a href="mailto:svetlinyouiry@gmail.com">svetlinyouiry@gmail.com</a>
+          </div>
+          <div class="contact-item">
+            <span class="contact-label">Teléfono</span>
+            <a href="tel:+34640516703">+34 640 516 703</a>
+          </div>
+          <div class="contact-item">
+            <span class="contact-label">GitHub</span>
+            <a href="https://github.com/3TL1" target="_blank" rel="noopener">github.com/3TL1</a>
+          </div>
+          <div class="contact-item">
+            <span class="contact-label">Ubicación</span>
+            <span>Madrid, España</span>
+          </div>
+        </div>
+        <form class="contact-form" id="contact-form">
+          <div class="form-row">
+            <label for="nombre">Nombre</label>
+            <input id="nombre" name="user_name" type="text" placeholder="Tu nombre" required />
+          </div>
+          <div class="form-row">
+            <label for="correo">Correo</label>
+            <input id="correo" name="user_email" type="email" placeholder="tu@email.com" required />
+          </div>
+          <div class="form-row">
+            <label for="mensaje">Mensaje</label>
+            <textarea id="mensaje" name="message" rows="4" placeholder="Cuéntame sobre tu proyecto o propuesta." required></textarea>
+          </div>
+          <button type="submit" class="btn primary" id="submit-btn">
+            Enviar mensaje
+          </button>
+          <div id="form-message" class="form-message"></div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>© <span id="year"></span> Svetlin Youiry · Portfolio</span>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
+

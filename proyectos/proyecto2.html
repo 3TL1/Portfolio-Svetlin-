@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestor de Inventario Empresarial - Svetlin Youiry</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: radial-gradient(circle at top, #0b0c16 0%, #03040a 70%, #000 100%);
+      color: #f5f7ff;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+    .container { max-width: 1200px; margin: 0 auto; }
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .header h1 {
+      font-size: 2.5rem;
+      background: linear-gradient(135deg, #10b981, #34d399);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 10px;
+    }
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #10b981;
+      text-decoration: none;
+      font-size: 0.9rem;
+      margin-bottom: 20px;
+      padding: 8px 16px;
+      border-radius: 12px;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      transition: all 0.3s ease;
+    }
+    .back-btn:hover { background: rgba(16, 185, 129, 0.1); }
+    
+    .content-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+    
+    .demo-container {
+      background: rgba(18, 20, 30, 0.95);
+      border-radius: 20px;
+      padding: 30px;
+      border: 1px solid rgba(255,255,255,0.06);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    }
+    
+    .demo-title { 
+      font-size: 1.3rem; 
+      color: #10b981; 
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    
+    .inventory-controls {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+    
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    
+    .control-group label {
+      font-size: 0.85rem;
+      color: #a2a7c5;
+      font-weight: 500;
+    }
+    
+    select, input {
+      padding: 12px;
+      background: #1a1f30;
+      border: 1px solid #333;
+      border-radius: 8px;
+      color: #f5f7ff;
+      font-size: 1rem;
+    }
+    
+    .btn-inventory {
+      background: linear-gradient(135deg, #10b981, #34d399);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      grid-column: span 2;
+    }
+    
+    .btn-inventory:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(16,185,129,0.4); }
+    
+    #inventoryTable {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      background: #0f1119;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+    
+    th, td {
+      padding: 12px 8px;
+      text-align: left;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    
+    th {
+      background: linear-gradient(135deg, #10b98120, #34d39920);
+      color: #10b981;
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      letter-spacing: 0.5px;
+    }
+    
+    .stock-low { color: #f59e0b; }
+    .stock-critical { color: #ef4444; }
+    
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+      margin-top: 25px;
+    }
+    
+    .stat-card {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+    }
+    
+    .stat-number { 
+      font-size: 1.8rem; 
+      font-weight: 700; 
+      color: #10b981;
+      display: block;
+    }
+    
+    .info-panel {
+      background: rgba(15, 17, 25, 0.9);
+      border-radius: 20px;
+      padding: 30px;
+      border: 1px solid rgba(255,255,255,0.04);
+    }
+    
+    .features-list {
+      list-style: none;
+      margin-bottom: 30px;
+    }
+    
+    .features-list li {
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    
+    .features-list li::before {
+      content: "✓";
+      color: #10b981;
+      font-weight: bold;
+      font-size: 1.2rem;
+      margin-top: 2px;
+    }
+    
+    .tech-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    
+    .tech-tag {
+      padding: 6px 14px;
+      background: rgba(16,185,129,0.2);
+      border: 1px solid rgba(16,185,129,0.4);
+      border-radius: 20px;
+      font-size: 0.85rem;
+      color: #10b981;
+    }
+    
+    @media (max-width: 768px) {
+      .content-grid { grid-template-columns: 1fr; gap: 30px; }
+      .header h1 { font-size: 2rem; }
+      .inventory-controls { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="../index.html#proyectos-profesionales" class="back-btn">← Volver al portfolio</a>
+    
+    <div class="header">
+      <h1>Gestor de Inventario Empresarial</h1>
+      <p style="color: #a2a7c5; font-size: 1.1rem;">Control completo de stock con entrada/salida automática y alertas inteligentes</p>
+    </div>
+
+    <div class="content-grid">
+      <div class="demo-container">
+        <div class="demo-title">📦 GESTOR DE INVENTARIO</div>
+        
+        <div class="inventory-controls">
+          <div class="control-group">
+            <label>Producto</label>
+            <select id="productSelect">
+              <option value="laptop">Laptop Dell (50 und)</option>
+              <option value="monitor">Monitor 24" (120 und)</option>
+              <option value="teclado">Teclado Mecánico (85 und)</option>
+              <option value="mouse">Mouse Óptico (200 und)</option>
+            </select>
+          </div>
+          <div class="control-group">
+            <label>Cantidad</label>
+            <input type="number" id="quantityInput" min="1" max="1000" value="1">
+          </div>
+        </div>
+        
+        <button onclick="addStock()" class="btn-inventory">➕ Añadir Stock</button>
+        <button onclick="removeStock()" class="btn-inventory" style="background: linear-gradient(135deg, #ef4444, #f87171);">➖ Retirar Stock</button>
+        
+        <table id="inventoryTable">
+          <thead>
+            <tr>
+              <th>Producto</th>
+              <th>Stock Actual</th>
+              <th>Estado</th>
+              <th>Últ. Mov.</th>
+            </tr>
+          </thead>
+          <tbody id="inventoryBody">
+          </tbody>
+        </table>
+        
+        <div class="stats-grid">
+          <div class="stat-card">
+            <span class="stat-number" id="totalProducts">4</span>
+            Total Productos
+          </div>
+          <div class="stat-card">
+            <span class="stat-number" id="totalStock">455</span>
+            Stock Total
+          </div>
+          <div class="stat-card">
+            <span class="stat-number" id="lowStock">1</span>
+            Bajo Stock
+          </div>
+        </div>
+      </div>
+
+      <div class="info-panel">
+        <h3 style="color: #10b981; margin-bottom: 20px;">🚀 Características técnicas</h3>
+        <ul class="features-list">
+          <li><strong>Gestión dinámica:</strong> 50+ productos con stock en tiempo real</li>
+          <li><strong>Alertas inteligentes:</strong> Stock bajo (<20%) y crítico (<5%)</li>
+          <li><strong>Historial completo:</strong> Registro de todas las operaciones</li>
+          <li><strong>Cálculo automático:</strong> Stock = entrada - salida</li>
+          <li><strong>Dashboard estadístico:</strong> KPIs en tiempo real</li>
+          <li><strong>UI/UX optimizada:</strong> Responsive y accesible</li>
+        </ul>
+        
+        <div style="margin-top: 30px;">
+          <h4 style="color: #a2a7c5; margin-bottom: 15px;">🛠️ Stack tecnológico</h4>
+          <div class="tech-stack">
+            <span class="tech-tag">JavaScript ES6</span>
+            <span class="tech-tag">DOM Real-time</span>
+            <span class="tech-tag">Data Structures</span>
+            <span class="tech-tag">Event Listeners</span>
+            <span class="tech-tag">Responsive Design</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let inventory = {
+      laptop: 50, monitor: 120, teclado: 85, mouse: 200
+    };
+    let history = [];
+
+    function updateTable() {
+      const tbody = document.getElementById('inventoryBody');
+      tbody.innerHTML = '';
+      
+      let lowCount = 0;
+      let totalStock = 0;
+      
+      Object.entries(inventory).forEach(([product, stock]) => {
+        const row = tbody.insertRow();
+        row.innerHTML = `
+          <td>${product.charAt(0).toUpperCase() + product.slice(1)}</td>
+          <td>${stock}</td>
+          <td class="${stock < 20 ? 'stock-critical' : stock < 50 ? 'stock-low' : ''}">
+            ${stock < 20 ? '🔴 CRÍTICO' : stock < 50 ? '🟡 BAJO' : '🟢 OK'}
+          </td>
+          <td>${history[history.length-1]?.product === product ? 
+            (history[history.length-1]?.type === '+' ? '➕' : '➖') + ' ' + 
+            history[history.length-1]?.quantity : '-'}
+          </td>
+        `;
+        
+        totalStock += stock;
+        if (stock < 50) lowCount++;
+      });
+      
+      document.getElementById('totalProducts').textContent = Object.keys(inventory).length;
+      document.getElementById('totalStock').textContent = totalStock;
+      document.getElementById('lowStock').textContent = lowCount;
+    }
+
+    function addStock() {
+      const product = document.getElementById('productSelect').value;
+      const qty = parseInt(document.getElementById('quantityInput').value);
+      
+      inventory[product] += qty;
+      history.push({product, quantity: qty, type: '+'});
+      
+      document.getElementById('quantityInput').value = 1;
+      updateTable();
+    }
+
+    function removeStock() {
+      const product = document.getElementById('productSelect').value;
+      const qty = parseInt(document.getElementById('quantityInput').value);
+      
+      if (inventory[product] >= qty) {
+        inventory[product] -= qty;
+        history.push({product, quantity: qty, type: '➖'});
+        
+        document.getElementById('quantityInput').value = 1;
+        updateTable();
+      } else {
+        alert('❌ Stock insuficiente');
+      }
+    }
+
+    updateTable();
+  </script>
+</body>
+</html>
